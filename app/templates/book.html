@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<a href="/">← Back</a>
+<h1>{{ heading }}</h1>
+
+<div class="book_page">
+    <div class="book_details_card">
+        <div class="book-details">
+            <p><b>Title:</b> {{book.title}}</p>
+            <p><b>Author:</b> {{book.author}}</p>
+            <p><b>Creator:</b> {{book.creator}}</p>
+            <p><b>Producer:</b> {{book.producer}}</p>
+            <p><b>Creation date:</b> {{book.creation_date}}</p>
+            <p><b>Modification date:</b> {{book.modification_date}}</p>
+            <p><b>Size:</b> {{book.formatted_size}}</p>
+        </div>
+    </div>
+    <embed class="book" src="/file/{{book._id}}" />
+</div>
+
+{% endblock %}

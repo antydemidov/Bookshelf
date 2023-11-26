@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>{{ heading }}</h1>
+<p>{{ content }}</p>
+
+<div class="library">
+    {% for book in books %}
+    <a href="/book/{{book._id}}">
+        <p>{{book.title}}</p>
+        <p>{{book.extension}}</p>
+        <p>{{book.formatted_size}}</p>
+    </a>
+    {% endfor %}
+</div>
+
+{% endblock %}
