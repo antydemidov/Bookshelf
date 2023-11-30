@@ -64,6 +64,14 @@ class Book:
         }
         return properties
 
+    def set_properties(self, properties: dict):
+        """Updates the properties of the pdf file with the given properties."""
+
+    def get_properties(self):
+        """Returns the properties of the book."""
+
+        return self.__dict__
+
 
 class BookShelf:
     """Represents your library."""

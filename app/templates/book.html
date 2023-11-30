@@ -5,18 +5,21 @@
 <h1>{{ heading }}</h1>
 
 <div class="book_page">
-    <div class="book_details_card">
-        <div class="book-details">
-            <p><b>Title:</b> {{book.title}}</p>
-            <p><b>Author:</b> {{book.author}}</p>
-            <p><b>Creator:</b> {{book.creator}}</p>
-            <p><b>Producer:</b> {{book.producer}}</p>
-            <p><b>Creation date:</b> {{book.creation_date}}</p>
-            <p><b>Modification date:</b> {{book.modification_date}}</p>
-            <p><b>Size:</b> {{book.formatted_size}}</p>
-        </div>
-    </div>
+    <form action="" method="POST" name="pdf_form">
+        {{ form.csrf_token }}
+        <div>{{ form.title.label }}{{ form.title }}</div>
+        <div>{{ form.creator.label }}{{ form.creator }}</div>
+        <div>{{ form.producer.label }}{{ form.producer }}</div>
+        <div>{{ form.creation_date.label }}{{ form.creation_date }}</div>
+        <div>{{ form.modification_date.label }}{{ form.modification_date }}</div>
+        <div>{{ form.author.label }}{{ form.author }}</div>
+        <div>{{ form.extension.label }}{{ form.extension }}</div>
+        <div>{{ form.formatted_size.label }}{{ form.formatted_size }}</div>
+        <div><input type="submit" value="Save"></div>
+    </form>
     <embed class="book" src="/file/{{book._id}}" />
 </div>
+
+<a href="/">Open the file →</a>
 
 {% endblock %}

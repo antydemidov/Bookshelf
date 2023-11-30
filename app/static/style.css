@@ -68,6 +68,48 @@ a {
     gap: 20px;
 }
 
+.book_page > form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 700px;
+    background: #f1f1f1;
+    border-radius: 16px;
+    padding: 20px;
+    gap: 10px;
+    font-weight: 700;
+}
+
+.book_page > form > div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.book_page * input {
+    border-radius: 16px;
+    border: 0;
+    background: #fff;
+    padding: 5px 10px;
+}
+
+.book_page * input:disabled {
+    background-color: #f6f6f6;
+    color: #999;
+}
+
+.book_page * input#submit {
+    background: #12633d;
+    color: white;
+    cursor: pointer;
+}
+
+.book_page * input#submit:hover {
+    background: #0e4e30;
+}
+
 .book-details {
     background: #f9f9f9;
     border-radius: 16px;
