@@ -134,6 +134,5 @@ dmypy.json
 library
 tmp_*
 temp_*
-data*
 *.db
 x_DEL*
