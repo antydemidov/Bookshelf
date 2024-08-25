@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="../static/style.css" />
+    <link rel="stylesheet" href="..\static\style.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
@@ -34,33 +34,11 @@
                     <div class="tooltip">Settings</div>
                 </a>
             </div>
-            <form class="toolbar shadow rounded" method="post" action="" id="toolbar_form">
-                <a class="toolbar-item shadow rounded" href="/upload">
-                    <span class="material-symbols-outlined">upload_file</span>
-                    <div class="tooltip">Add book from file</div>
-                </a>
-                <a class="toolbar-item shadow rounded" href="/">
-                    <span class="material-symbols-outlined">drive_folder_upload</span>
-                    <div class="tooltip">Add books from directory</div>
-                </a>
-                <a class="toolbar-item shadow rounded" href="/add_person">
-                    <span class="material-symbols-outlined">person_add</span>
-                    <div class="tooltip">Add person</div>
-                </a>
-                <a class="toolbar-item shadow rounded" href="/add_organization">
-                    <span class="material-symbols-outlined">domain_add</span>
-                    <div class="tooltip">Add organization</div>
-                </a>
-                <a class="toolbar-item shadow rounded" href="/clean_library">
-                    <span class="material-symbols-outlined">scan_delete</span>
-                    <div class="tooltip">Clean library</div>
-                </a>
-            </form>
             {% block content %} {% endblock %}
         </div>
-        <footer class="footer">
+        <div class="footer">
             <p class="footer-content">@antydemidov, 2024</p>
-        </footer>
+        </div>
     </div>
 </body>
 

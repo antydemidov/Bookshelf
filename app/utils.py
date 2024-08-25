@@ -1,3 +1,6 @@
+"""A set of utilities for the web app of Bookshelf."""
+
+
 def get_size_format(size, factor=1024, suffix='B'):
     """
     Scale bytes to its proper byte format.

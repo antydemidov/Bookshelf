@@ -1,0 +1,9 @@
+{% extends "layout_simple.html" %} {% block content %}
+<div class="page-heading rounded shadow">
+    <h1><span class="red-text">{{error.code}}</span> {{error.name}}</h1>
+</div>
+<div class="error-content rounded shadow">
+    <span class="material-symbols-outlined red-texr">error</span>
+    <p>{{ error.description }}</p>
+</div>
+{% endblock %}

@@ -6,7 +6,7 @@ The module to make the app.
 
 from flask import Flask
 
-from src import BookShelf
+from bookshelf import BookShelf
 
 
 class Config(object):
@@ -19,4 +19,4 @@ app.config.from_object(config)
 
 bookshelf = BookShelf()
 
-from . import views
+from app import views

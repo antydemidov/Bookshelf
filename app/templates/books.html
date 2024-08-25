@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block content %}
+<div class="page-heading rounded shadow">
+    <h1>{{ heading }}</h1>
+</div>
+
+<div class="library">
+    {% for book in books %}
+    <a class="library-item rounded shadow" href="/book/{{book.data.identifier}}">
+        <div>
+            <p class="library-title">{{book.data.name}}</p>
+            <p class="library-authors">{{book.authors_str}}</p>
+            <div class="tooltip">{{book.data.abstract}}</div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+{% endblock %}
