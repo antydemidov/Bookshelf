@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block content %}
+<div class="page-heading rounded shadow">
+    <h1>{{ heading }}</h1>
+</div>
+
+<div class="library">
+    {% for person in persons %}
+    <a class="library-item rounded shadow" href="/person/{{person.get_id()}}">
+        <img class="rounded" src="{{person.pic_url}}" alt="">
+        <div>
+            <p class="library-title">{{person.data.full_name}}</p>
+            <p class="library-authors">{{person.years_str}}</p>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+{% endblock %}

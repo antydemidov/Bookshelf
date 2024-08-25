@@ -1,0 +1,20 @@
+{% extends "layout_simple.html" %} {% block content %}
+
+<div class="page-heading rounded shadow">
+    <h1>Upload file</h1>
+</div>
+
+<div class="book_page upload_book">
+    <form class="info-form shadow rounded" id="person_form" action="" method="POST" name="person_form"
+        enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <div class="info-form-fields">
+            <div class="info-form-field">{{form.file.label}}{{form.file}}</div>
+        </div>
+        <div class="info-form-submit">
+            <input class="button" type="submit" value="Upload" />
+        </div>
+    </form>
+</div>
+
+{% endblock %}

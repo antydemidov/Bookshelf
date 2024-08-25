@@ -1,22 +1,136 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block content %}
 
-{% block content %}
-<a href="/">← Back</a>
-<h1>{{ heading }}</h1>
+<script type="text/javascript">
+    function addItem(element, id_start) {
+        let old_field = element.parentElement.previousElementSibling.lastElementChild;
+        let new_field = old_field.cloneNode(true);
+        let new_id = id_start + (Date.now())
+        new_field.id = new_id;
+        new_field.name = new_id;
+        old_field.insertAdjacentElement('afterend', new_field);
+    }
+
+    function deleteItem(element, id_start) {
+        let field = element.parentElement.previousElementSibling.lastElementChild;
+        if (field.id != id_start) {
+            field.parentElement.removeChild(field);
+        } else {
+            alert('You can\'t delete the first item.');
+        }
+    }
+</script>
+
+<div class="action-bar">
+    <div class="action-bar-item">
+        <!-- <span class="material-symbols-outlined">arrow_back</span> -->
+        <a href="/books">← Back</a>
+    </div>
+    <div class="action-bar-item">
+        <!-- <span class="material-symbols-outlined red-text">delete</span> -->
+        <a href="{{delete_url}}" class="red-text">Delete the book</a>
+    </div>
+    <div class="action-bar-item">
+        <!-- <span class="material-symbols-outlined">book_2</span> -->
+        <a href={{view_url}}>Open the file →</a>
+    </div>
+</div>
+
+<div class="page-heading rounded shadow">
+    <h1>{{ book.data.name }}</h1>
+</div>
 
 <div class="book_page">
-    <div class="book_details_card">
-        <div class="book-details">
-            <p><b>Title:</b> {{book.title}}</p>
-            <p><b>Author:</b> {{book.author}}</p>
-            <p><b>Creator:</b> {{book.creator}}</p>
-            <p><b>Producer:</b> {{book.producer}}</p>
-            <p><b>Creation date:</b> {{book.creation_date}}</p>
-            <p><b>Modification date:</b> {{book.modification_date}}</p>
-            <p><b>Size:</b> {{book.formatted_size}}</p>
+    <form class="info-form shadow rounded" id="book_form" action="" method="POST" name="book_form">
+        {{ form.csrf_token }}
+        <div class="info-form-fields">
+            <div class="info-form-field">{{form.identifier.label}}{{form.identifier}}</div>
+            <div class="info-form-field">{{form.name.label}}{{form.name}}</div>
+            <div class="info-form-field">{{form.authors.label}}
+                {% for entry in form.authors %}{{entry}}{% endfor %}
+            </div>
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'authors-0');">Delete author</div>
+                <div class="add_item" onclick="addItem(this, 'authors');">Add author</div>
+            </div>
+            <div class="info-form-field">{{form.publishers.label}}
+                {% for entry in form.publishers %}{{entry}}{% endfor %}
+            </div>
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'publishers-0');">Delete publisher</div>
+                <div class="add_item" onclick="addItem(this, 'publishers');">Add publisher</div>
+            </div>
+            <div class="info-form-field">{{form.translators.label}}
+                {% for entry in form.translators %}{{entry}}{% endfor %}
+            </div>
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'translators-0');">Delete translator</div>
+                <div class="add_item" onclick="addItem(this, 'translators');">Add translator</div>
+            </div>
+            <div class="info-form-field">{{form.illustrators.label}}
+                {% for entry in form.illustrators %}{{entry}}{% endfor %}
+            </div>
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'illustrators-0');">Delete illustrator</div>
+                <div class="add_item" onclick="addItem(this, 'illustrators');">Add illustrator</div>
+            </div>
+            <div class="info-form-field">{{form.characters.label}}
+                {% for entry in form.characters %}{{entry}}{% endfor %}
+            </div>
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'characters-0');">Delete character</div>
+                <div class="add_item" onclick="addItem(this, 'characters');">Add character</div>
+            </div>
+            <div class="info-form-field">{{form.description.label}}{{form.description}}</div>
+            <div class="info-form-field">{{form.image.label}}{{form.image}}</div>
+            <div class="info-form-field">{{form.url.label}}{{form.url}}</div>
+            <div class="info-form-field">{{form.badges.label}}{{form.badges}}</div>
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'badges-0');">Delete badge</div>
+                <div class="add_item" onclick="addItem(this, 'badges');">Add badge</div>
+            </div>
+            <div class="info-form-field">{{form.abstract.label}}{{form.abstract}}</div>
+            <div class="info-form-field">{{form.comment.label}}{{form.comment}}</div>
+            <div class="info-form-field">{{form.content_location.label}}{{form.content_location}}</div>
+            <div class="info-form-field">{{form.content_rating.label}}{{form.content_rating}}</div>
+            <div class="info-form-field">{{form.content_reference_time.label}}{{form.content_reference_time}}</div>
+            <div class="info-form-field">{{form.country_of_origin.label}}{{form.country_of_origin}}</div>
+            <div class="info-form-field">{{form.date_created.label}}{{form.date_created}}</div>
+            <div class="info-form-field">{{form.date_modified.label}}{{form.date_modified}}</div>
+            <div class="info-form-field">{{form.date_published.label}}{{form.date_published}}</div>
+            <div class="info-form-field">{{form.genres.label}}{{form.genres}}</div>
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'genres-0');">Delete genre</div>
+                <div class="add_item" onclick="addItem(this, 'genres');">Add genre</div>
+            </div>
+            <div class="info-form-field">{{form.in_language.label}}{{form.in_language}}</div>
+            <div class="info-form-field">{{form.is_accessible_for_free.label}}{{form.is_accessible_for_free}}</div>
+            <div class="info-form-field">{{form.is_family_friendly.label}}{{form.is_family_friendly}}</div>
+            <div class="info-form-field">{{form.is_in_original_language.label}}{{form.is_in_original_language}}</div>
+            <div class="info-form-field">{{form.is_abridged.label}}{{form.is_abridged}}</div>
+            <div class="info-form-field">{{form.part_of.label}}{{form.part_of}}</div>
+            <div class="info-form-field">{{form.keywords.label}}{{form.keywords}}</div>
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'keywords-0');">Delete keyword</div>
+                <div class="add_item" onclick="addItem(this, 'keywords');">Add keyword</div>
+            </div>
+            <div class="info-form-field">{{form.license.label}}{{form.license}}</div>
+            <div class="info-form-field">{{form.position.label}}{{form.position}}</div>
+            <div class="info-form-field">{{form.thumbnail.label}}{{form.thumbnail}}</div>
+            <div class="info-form-field">{{form.translation_of_work.label}}{{form.translation_of_work}}</div>
+            <div class="info-form-field">{{form.location_created.label}}{{form.location_created}}</div>
+            <div class="info-form-field">{{form.book_edition.label}}{{form.book_edition}}</div>
+            <div class="info-form-field">{{form.book_format.label}}{{form.book_format}}</div>
+            <div class="info-form-field">{{form.isbn.label}}{{form.isbn}}</div>
+            <div class="info-form-field">{{form.number_of_pages.label}}{{form.number_of_pages}}</div>
+            <div class="info-form-field">{{form.file_size.label}}{{form.file_size}}</div>
+            <div class="info-form-field">{{form.file_type.label}}{{form.file_type}}</div>
+            <!-- <div>{{form.submit.label}}{{form.submit}}</div> -->
         </div>
-    </div>
-    <embed class="book" src="/file/{{book._id}}" />
+        <div class="info-form-submit">
+            <input class="button" type="submit" value="Save" />
+        </div>
+    </form>
+    <embed class="book shadow" src="/file/{{book.data.identifier}}" />
 </div>
 
 {% endblock %}

@@ -1,0 +1,42 @@
+{% extends "layout_simple.html" %} {% block content %}
+
+<div class="page-heading rounded shadow">
+    <h1>{{ organization.data.name }}</h1>
+</div>
+
+<div class="action-bar">
+    <div class="action-bar-item">
+        <a href="/organizations">← Back</a>
+    </div>
+    <div class="action-bar-item">
+        <a href="{{delete_url}}" class="red-text">Delete the organization</a>
+    </div>
+    <div class="action-bar-item">
+        <a href="/books?author_id={{organization.data.id}}">Books of this organization →</a>
+    </div>
+</div>
+
+<div class="person_page">
+    <form class="info-form shadow rounded" id="person_form" action="" method="post" name="person_form">
+        {{ form.csrf_token }}
+        <div class="info-form-fields">
+            <div class="info-form-field">{{form.name.label}}{{form.name}}</div>
+            <div class="info-form-field">{{form.description.label}}{{form.description}}</div>
+            <div class="info-form-field">{{form.alternate_name.label}}{{form.alternate_name}}</div>
+            <div class="info-form-field">{{form.image.label}}{{form.image}}</div>
+            <div class="info-form-field">{{form.url.label}}{{form.url}}</div>
+            <div class="info-form-field">{{form.address.label}}{{form.address}}</div>
+            <div class="info-form-field">{{form.email.label}}{{form.email}}</div>
+            <div class="info-form-field">{{form.founding_date.label}}{{form.founding_date}}</div>
+            <div class="info-form-field">{{form.founding_location.label}}{{form.founding_location}}</div>
+            <div class="info-form-field">{{form.is_non_profit.label}}{{form.is_non_profit}}</div>
+            <div class="info-form-field">{{form.phone.label}}{{form.phone}}</div>
+        </div>
+        <div class="info-form-submit">
+            <input class="button" type="submit" value="Save" />
+        </div>
+    </form>
+    <img class="person-picture shadow rounded" src="{{pic_url}}" alt="">
+</div>
+
+{% endblock %}

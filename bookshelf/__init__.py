@@ -1,5 +1,7 @@
 """
 Bookshelf
+---------
+A simple library based on your folder with books.
 """
 
 from .bookshelf import BookShelf

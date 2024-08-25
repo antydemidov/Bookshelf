@@ -1,0 +1,46 @@
+{% extends "layout_simple.html" %} {% block content %}
+
+<div class="page-heading rounded shadow">
+    <h1>{{ person.data.full_name }}</h1>
+</div>
+
+<div class="action-bar">
+    <div class="action-bar-item">
+        <a href="/persons">← Back</a>
+    </div>
+    <div class="action-bar-item">
+        <a href="{{delete_url}}" class="red-text">Delete the person</a>
+    </div>
+    <div class="action-bar-item">
+        <a href="/books?author_id={{person.data.id}}">Books of this author →</a>
+    </div>
+</div>
+
+<div class="person_page">
+    <form class="info-form shadow rounded" id="person_form" action="" method="post" name="person_form">
+        {{ form.csrf_token }}
+        <div class="info-form-fields">
+            <div class="info-form-field">{{form.family_name.label}}{{form.family_name}}</div>
+            <div class="info-form-field">{{form.given_name.label}}{{form.given_name}}</div>
+            <div class="info-form-field">{{form.additional_name.label}}{{form.additional_name}}</div>
+            <div class="info-form-field">{{form.alternate_name.label}}{{form.alternate_name}}</div>
+            <div class="info-form-field">{{form.description.label}}{{form.description}}</div>
+            <div class="info-form-field">{{form.image.label}}{{form.image}}</div>
+            <div class="info-form-field">{{form.url.label}}{{form.url}}</div>
+            <div class="info-form-field">{{form.birth_date.label}}{{form.birth_date}}</div>
+            <div class="info-form-field">{{form.birth_place.label}}{{form.birth_place}}</div>
+            <div class="info-form-field">{{form.death_date.label}}{{form.death_date}}</div>
+            <div class="info-form-field">{{form.death_place.label}}{{form.death_place}}</div>
+            <div class="info-form-field">{{form.email.label}}{{form.email}}</div>
+            <div class="info-form-field">{{form.gender.label}}{{form.gender}}</div>
+            <div class="info-form-field">{{form.member_of.label}}{{form.member_of}}</div>
+            <div class="info-form-field">{{form.nationality.label}}{{form.nationality}}</div>
+        </div>
+        <div class="info-form-submit">
+            <input class="button" type="submit" value="Save" />
+        </div>
+    </form>
+    <img class="person-picture shadow rounded" src="{{pic_url}}" alt="">
+</div>
+
+{% endblock %}
