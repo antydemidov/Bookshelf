@@ -4,7 +4,8 @@
 from flask import redirect, render_template, send_file, request
 
 from app import app, bookshelf, utils
-from app.forms import OrganizationForm, PersonForm, FileForm, build_book_form
+from app.forms import (OrganizationForm, PersonForm, FileForm,
+                       build_book_form, build_settings_form)
 
 
 @app.route('/')
@@ -40,13 +41,13 @@ def books():
     heading = 'Books'
 
     author_id = request.args.get('author_id', None, int)
-    books = bookshelf.books.get_books(author_id)
+    books_list = bookshelf.books.get_books(author_id)
 
     return render_template(
         'books.html',
         title=title,
         heading=heading,
-        books=books
+        books=books_list
     )
 
 
@@ -219,13 +220,13 @@ def organizations():
     title = '🌠 Bookshelf | Organizations'
     heading = 'Organizations'
 
-    organizations = bookshelf.organizations.organizations
+    organizations_list = bookshelf.organizations.organizations
 
     return render_template(
         'organizations.html',
         title=title,
         heading=heading,
-        organizations=organizations
+        organizations=organizations_list
     )
 
 
@@ -253,6 +254,23 @@ def organization(_id: int):
         pic_url=pic_url,
         organization=organization_obj,
         delete_url=delete_url,
+        form=form
+    )
+
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+
+    data = bookshelf.settings.data.model_dump()
+    form = build_settings_form(data)
+
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        bookshelf.settings.update(data)
+        return redirect('/settings')
+
+    return render_template(
+        'settings.html',
         form=form
     )
 

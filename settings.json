@@ -1,3 +1,8 @@
 {
-    "library_path": "library"
+    "default_picture": "../static/person_default.png",
+    "other_ids_links": {
+        "ISSN": "https://portal.issn.org/resource/ISSN/{placeholder}",
+        "DOI": "https://doi.org/{placeholder}",
+        "OLID": "https://openlibrary.org/works/{placeholder}"
+    }
 }

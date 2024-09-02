@@ -4,10 +4,10 @@ Bookshelf Forms
 
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from wtforms import (BooleanField, DateField, EmailField, FieldList,
+from wtforms import (BooleanField, DateField, EmailField, FieldList, FormField,
                      IntegerField, SelectField, StringField, SubmitField,
                      TextAreaField, URLField)
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, Regexp
 
 from bookshelf.utils import Constants
 
@@ -94,7 +94,7 @@ class BookForm(FlaskForm):
     file_size = StringField('File Size', render_kw=DISABLED)
     file_type = StringField('File Type', render_kw=DISABLED)
 
-    submit = SubmitField('Save')
+    # submit = SubmitField('Save')
 
 
 def build_book_form(data: dict, choices: list):
@@ -140,11 +140,49 @@ class FilterForm(FlaskForm):
     language = SelectField('Language', choices=[])
     badge = SelectField('Badge', choices=Constants.BADGES.value)
 
-    submit = SubmitField('Search')
+    # submit = SubmitField('Search')
 
 
 class FileForm(FlaskForm):
 
     file = FileField('File', name='file', validators=[FileRequired()])
 
-    submit = SubmitField('Upload')
+    # submit = SubmitField('Upload')
+
+
+class OtherIDsForm(FlaskForm):
+
+    id_type = StringField('Type', validators=[DataRequired()],
+                          render_kw = {'class': 'info-form-field-row-type'})
+    url = StringField('URL', validators=[DataRequired(), Regexp(
+        r'{placeholder}', message=r'Must contain "{placeholder}"')],
+                      render_kw = {'class': 'info-form-field-row-url'})
+
+
+class SettingsForm(FlaskForm):
+
+    default_picture = StringField()
+    other_ids_links = FieldList(FormField(OtherIDsForm, 'ID'), 'IDs')
+
+
+def build_settings_form(data: dict):
+
+    form_data = {'default_picture': data.copy().pop('default_picture')}
+
+    form = SettingsForm(**form_data)
+
+    field_name = 'other_ids_links'
+    field_data = data[field_name]
+    field_list: FieldList = getattr(form, field_name)
+    if not field_data:
+        field_list.append_entry('0')
+    else:
+        for key, value in field_data.items():
+            field_list.append_entry(
+                {
+                    'id_type': key,
+                    'url': value
+                }
+            )
+
+    return form
