@@ -285,7 +285,8 @@ a:hover>p {
 }
 
 .book_page,
-.person_page {
+.person_page,
+.settings_page {
   display: flex;
   gap: 20px;
   height: 600px;
@@ -316,6 +317,25 @@ a:hover>p {
 .info-form-field {
   display: grid;
   gap: 5px;
+}
+
+.settings_page .info-form-field {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
+
+.info-form-field-row-url {
+  width: -webkit-fill-available;
+}
+
+.info-form-field-row {
+  display: flex;
+  gap: 15px;
+}
+
+.info-form-field-row-type {
+  width: 100px;
 }
 
 .info-form-submit {
