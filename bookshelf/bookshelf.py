@@ -6,7 +6,9 @@ from datetime import date, datetime
 
 from bookshelf import utils
 from bookshelf.database import Database
-from bookshelf.models import BookModel, OrganizationModel, PersonModel, SettingsModel
+from bookshelf.locale import Localization
+from bookshelf.models import (BookModel, OrganizationModel, PersonModel,
+                              SettingsModel)
 
 
 class Settings:
@@ -410,6 +412,7 @@ class BookShelf:
         self.persons = Persons(self.database)
         self.organizations = Organizations(self.database)
         self.settings = Settings()
+        self.locale = Localization(self.settings.data.default_language)
 
     # def get_settings(self):
     #     """Loads settings from the settings file."""
@@ -458,6 +461,10 @@ class BookShelf:
         for organization in self.organizations.organizations:
             person_org_list.append((organization.get_id(), organization.data.name))
         return person_org_list
+
+    def change_language(self, lang: str):
+        self.settings.update({'default_language': lang})
+        self.locale.load(lang)
 
     # def scan_library(self, file_types: str | list[str] = None) -> list[Book]:
     #     """

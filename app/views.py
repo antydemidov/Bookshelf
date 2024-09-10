@@ -1,5 +1,4 @@
-"""Here must be the string"""
-# import os
+"""The views for the web-app."""
 
 from flask import redirect, render_template, send_file, request
 
@@ -14,17 +13,18 @@ def index():
     The main page.
     """
 
-    title = '🌠 Bookshelf: a manager for your books'
-    heading = 'Welcome! This is your library :)'
-    content = '; '.join(['Directory size: ' + utils.get_size_format(bookshelf.get_size()),
-                         'Number of books: ' + str(len(bookshelf.books.books)),
-                         'Number of files: ' + str(4)])  # TODO: count files in the directory
+    title = "🌠 Bookshelf: " + bookshelf.locale.get('index_title')
+    dir_size = utils.get_size_format(bookshelf.get_size())
+    books_number = str(len(bookshelf.books.books))
+    file_number = str(4)  # TODO: count files in the directory
+
     return render_template(
         'index.html',
         title=title,
-        heading=heading,
-        content=content,
-        books=bookshelf.books.books
+        dir_size=dir_size,
+        books_number=books_number,
+        file_number=file_number,
+        bookshelf=bookshelf
     )
 
 
@@ -32,13 +32,9 @@ def index():
 def books():
     """
     The page of books.
-
-    Features
-    --------
     """
 
-    title = '🌠 Bookshelf | Books'
-    heading = 'Books'
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('books_title')
 
     author_id = request.args.get('author_id', None, int)
     books_list = bookshelf.books.get_books(author_id)
@@ -46,8 +42,8 @@ def books():
     return render_template(
         'books.html',
         title=title,
-        heading=heading,
-        books=books_list
+        books=books_list,
+        bookshelf=bookshelf
     )
 
 
@@ -89,7 +85,8 @@ def book(uuid: str):
         delete_url=delete_url,
         view_url=view_url,
         book=book_obj,
-        form=form
+        form=form,
+        bookshelf=bookshelf
     )
 
 
@@ -142,7 +139,8 @@ def get_file(uuid):
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_book():
-    title = '🌠 Bookshelf | Upload file'
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('upload_title')
+    heading = bookshelf.locale.get('upload_title')
     form = FileForm()
     if request.method == 'POST':
         if form.file.data:
@@ -152,21 +150,22 @@ def upload_book():
     return render_template(
         'upload_book.html',
         title=title,
-        form=form
+        heading=heading,
+        form=form,
+        bookshelf=bookshelf
     )
 
 
 @app.route('/persons')
 def persons():
 
-    title = '🌠 Bookshelf | Persons'
-    heading = 'Persons'
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('persons:title')
 
     return render_template(
         'persons.html',
         title=title,
-        heading=heading,
-        persons=bookshelf.persons.persons
+        persons=bookshelf.persons.persons,
+        bookshelf=bookshelf
     )
 
 
@@ -204,7 +203,8 @@ def person(_id: str):
         person=person_obj,
         pic_url=pic_url,
         delete_url=delete_url,
-        form=form
+        form=form,
+        bookshelf=bookshelf
     )
 
 
@@ -217,16 +217,15 @@ def organizations():
     --------
     """
 
-    title = '🌠 Bookshelf | Organizations'
-    heading = 'Organizations'
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('organizations:title')
 
     organizations_list = bookshelf.organizations.organizations
 
     return render_template(
         'organizations.html',
         title=title,
-        heading=heading,
-        organizations=organizations_list
+        organizations=organizations_list,
+        bookshelf=bookshelf
     )
 
 
@@ -254,13 +253,15 @@ def organization(_id: int):
         pic_url=pic_url,
         organization=organization_obj,
         delete_url=delete_url,
-        form=form
+        form=form,
+        bookshelf=bookshelf
     )
 
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
 
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('settings:title')
     data = bookshelf.settings.data.model_dump()
     form = build_settings_form(data)
 
@@ -271,8 +272,16 @@ def settings():
 
     return render_template(
         'settings.html',
-        form=form
+        title=title,
+        form=form,
+        bookshelf=bookshelf
     )
+
+
+@app.route('/language/<lang>')
+def change_language(lang: str):
+    bookshelf.change_language(lang)
+    return redirect('/')
 
 
 @app.errorhandler(Exception)

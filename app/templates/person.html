@@ -6,13 +6,13 @@
 
 <div class="action-bar">
     <div class="action-bar-item">
-        <a href="/persons">← Back</a>
+        <a href="/persons">← {{ bookshelf.locale.get('person:toolbar:back') }}</a>
     </div>
     <div class="action-bar-item">
-        <a href="{{delete_url}}" class="red-text">Delete the person</a>
+        <a href="{{delete_url}}" class="red-text">{{ bookshelf.locale.get('person:toolbar:delete_person') }}</a>
     </div>
     <div class="action-bar-item">
-        <a href="/books?author_id={{person.data.id}}">Books of this author →</a>
+        <a href="/books?author_id={{person.data.id}}">{{ bookshelf.locale.get('person:toolbar:books_by_person') }} →</a>
     </div>
 </div>
 
