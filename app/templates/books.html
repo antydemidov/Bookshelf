@@ -1,6 +1,6 @@
-{% extends "layout.html" %} {% block content %}
+{% extends "layout_extended.html" %} {% block content %}
 <div class="page-heading rounded shadow">
-    <h1>{{ heading }}</h1>
+    <h1>{{ bookshelf.locale.get('books:title') }}</h1>
 </div>
 
 <div class="library">
@@ -9,7 +9,7 @@
         <div>
             <p class="library-title">{{book.data.name}}</p>
             <p class="library-authors">{{book.authors_str}}</p>
-            <div class="tooltip">{{book.data.abstract}}</div>
+            <!-- <div class="tooltip">{{book.data.abstract}}</div> -->
         </div>
     </a>
     {% endfor %}

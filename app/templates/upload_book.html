@@ -1,7 +1,7 @@
 {% extends "layout_simple.html" %} {% block content %}
 
 <div class="page-heading rounded shadow">
-    <h1>Upload file</h1>
+    <h1>{{ bookshelf.locale.get('upload:title') }}</h1>
 </div>
 
 <div class="book_page upload_book">
@@ -12,7 +12,7 @@
             <div class="info-form-field">{{form.file.label}}{{form.file}}</div>
         </div>
         <div class="info-form-submit">
-            <input class="button" type="submit" value="Upload" />
+            {{form.submit}}
         </div>
     </form>
 </div>

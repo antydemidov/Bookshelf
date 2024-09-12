@@ -1,45 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="..\static\style.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-</head>
-
-<body>
-    <div class="wrapper">
-        <div class="container">
-            <div class="navbar">
-                <a class="navbar-item shadow rounded" href="/">
-                    <span class="material-symbols-outlined">home</span>
-                    <div class="tooltip">Main page</div>
-                </a>
-                <a class="navbar-item shadow rounded" href="/books">
-                    <span class="material-symbols-outlined">book_2</span>
-                    <div class="tooltip">Books</div>
-                </a>
-                <a class="navbar-item shadow rounded" href="/persons">
-                    <span class="material-symbols-outlined">person</span>
-                    <div class="tooltip">Persons</div>
-                </a>
-                <a class="navbar-item shadow rounded" href="/organizations">
-                    <span class="material-symbols-outlined">domain</span>
-                    <div class="tooltip">Organizations</div>
-                </a>
-                <a class="navbar-item shadow rounded" href="/settings">
-                    <span class="material-symbols-outlined">settings</span>
-                    <div class="tooltip">Settings</div>
-                </a>
-            </div>
-            {% block content %} {% endblock %}
-        </div>
-        <div class="footer">
-            <p class="footer-content">@antydemidov, 2024</p>
-        </div>
-    </div>
-</body>
-
-</html>
+{% block page_content %}
+    {% block content %} {% endblock content %}
+{% endblock page_content %}

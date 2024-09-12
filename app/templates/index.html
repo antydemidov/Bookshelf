@@ -1,11 +1,13 @@
 {% extends "layout_simple.html" %} {% block content %}
 
 <div class="page-heading rounded shadow">
-  <h1>{{ heading }}</h1>
+  <h1>{{ bookshelf.locale.get('index:heading') }}</h1>
 </div>
 
 <div class="page-heading rounded shadow">
-  <p>{{ content }}</p>
+  <p><b>{{ bookshelf.locale.get('index:dir_size') }}</b>: {{ dir_size }}</p>
+  <p><b>{{ bookshelf.locale.get('index:books_number') }}</b>: {{ books_number }}</p>
+  <p><b>{{ bookshelf.locale.get('index:file_number') }}</b>: {{ file_number }}</p>
 </div>
 
 {% endblock %}

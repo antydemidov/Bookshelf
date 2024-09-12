@@ -1,11 +1,11 @@
-"""Here must be the string"""
-# import os
+"""The views for the web-app."""
 
-from flask import redirect, render_template, send_file, request
+from flask import redirect, render_template, request, send_file
 
 from app import app, bookshelf, utils
-from app.forms import (OrganizationForm, PersonForm, FileForm,
-                       build_book_form, build_settings_form)
+from app.forms import (build_book_form, build_file_form,
+                       build_organization_form, build_person_form,
+                       build_settings_form)
 
 
 @app.route('/')
@@ -14,17 +14,18 @@ def index():
     The main page.
     """
 
-    title = '🌠 Bookshelf: a manager for your books'
-    heading = 'Welcome! This is your library :)'
-    content = '; '.join(['Directory size: ' + utils.get_size_format(bookshelf.get_size()),
-                         'Number of books: ' + str(len(bookshelf.books.books)),
-                         'Number of files: ' + str(4)])  # TODO: count files in the directory
+    title = "🌠 Bookshelf: " + bookshelf.locale.get('index:title')
+    dir_size = utils.get_size_format(bookshelf.get_size())
+    books_number = str(len(bookshelf.books.books))
+    file_number = str(4)  # TODO: count files in the directory
+
     return render_template(
         'index.html',
         title=title,
-        heading=heading,
-        content=content,
-        books=bookshelf.books.books
+        dir_size=dir_size,
+        books_number=books_number,
+        file_number=file_number,
+        bookshelf=bookshelf
     )
 
 
@@ -32,13 +33,9 @@ def index():
 def books():
     """
     The page of books.
-
-    Features
-    --------
     """
 
-    title = '🌠 Bookshelf | Books'
-    heading = 'Books'
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('books:title')
 
     author_id = request.args.get('author_id', None, int)
     books_list = bookshelf.books.get_books(author_id)
@@ -46,8 +43,8 @@ def books():
     return render_template(
         'books.html',
         title=title,
-        heading=heading,
-        books=books_list
+        books=books_list,
+        bookshelf=bookshelf
     )
 
 
@@ -70,7 +67,7 @@ def book(uuid: str):
     data = book_obj.data.model_dump()
     data['file_size'] = utils.get_size_format(data['file_size'])
     pers_org_choices = bookshelf.pers_org_choices()
-    form = build_book_form(data, pers_org_choices)
+    form = build_book_form(data, pers_org_choices, bookshelf)
 
     book_choices = bookshelf.book_choices()
     form.part_of.choices = book_choices
@@ -89,7 +86,8 @@ def book(uuid: str):
         delete_url=delete_url,
         view_url=view_url,
         book=book_obj,
-        form=form
+        form=form,
+        bookshelf=bookshelf
     )
 
 
@@ -142,8 +140,9 @@ def get_file(uuid):
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_book():
-    title = '🌠 Bookshelf | Upload file'
-    form = FileForm()
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('upload:title')
+    heading = bookshelf.locale.get('upload:title')
+    form = build_file_form(bookshelf)
     if request.method == 'POST':
         if form.file.data:
             file_data = form.file.data.stream.read()
@@ -152,21 +151,22 @@ def upload_book():
     return render_template(
         'upload_book.html',
         title=title,
-        form=form
+        heading=heading,
+        form=form,
+        bookshelf=bookshelf
     )
 
 
 @app.route('/persons')
 def persons():
 
-    title = '🌠 Bookshelf | Persons'
-    heading = 'Persons'
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('persons:title')
 
     return render_template(
         'persons.html',
         title=title,
-        heading=heading,
-        persons=bookshelf.persons.persons
+        persons=bookshelf.persons.persons,
+        bookshelf=bookshelf
     )
 
 
@@ -177,21 +177,13 @@ def person(_id: str):
     person_obj = bookshelf.persons.get_person(_id)
     title = f'🌠 Bookshelf | {person_obj.data.full_name}'
     delete_url = f'/person/{_id}/delete'
-    data = person_obj.data.model_dump()
-    if data.get('member_of', None):
-        data['member_of'] = data['member_of']['id']
-    form = PersonForm(**data)
+
     pic_url = person_obj.data.image
     if not pic_url:
         pic_url = '../static/person_default.png'
 
-    organization_choices = bookshelf.organization_choices()
-    form.member_of.choices = organization_choices
-    if person_obj.data.member_of:
-        for choice in organization_choices:
-            if choice[0] == person_obj.data.member_of.id:
-                default = choice
-        form.member_of.default = default
+    data = person_obj.data.model_dump()
+    form = build_person_form(data, bookshelf)
 
     if request.method == 'POST':
         data = request.form.to_dict()
@@ -204,7 +196,8 @@ def person(_id: str):
         person=person_obj,
         pic_url=pic_url,
         delete_url=delete_url,
-        form=form
+        form=form,
+        bookshelf=bookshelf
     )
 
 
@@ -217,16 +210,15 @@ def organizations():
     --------
     """
 
-    title = '🌠 Bookshelf | Organizations'
-    heading = 'Organizations'
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('organizations:title')
 
     organizations_list = bookshelf.organizations.organizations
 
     return render_template(
         'organizations.html',
         title=title,
-        heading=heading,
-        organizations=organizations_list
+        organizations=organizations_list,
+        bookshelf=bookshelf
     )
 
 
@@ -238,7 +230,9 @@ def organization(_id: int):
     title = f'🌠 Bookshelf | {organization_obj.data.name}'
     data = organization_obj.data.model_dump()
     delete_url = f'/organization/{_id}/delete'
-    form = OrganizationForm(**data)
+
+    form = build_organization_form(data, bookshelf)
+
     pic_url = organization_obj.data.image
     if not pic_url:
         pic_url = '../static/person_default.png'
@@ -254,15 +248,17 @@ def organization(_id: int):
         pic_url=pic_url,
         organization=organization_obj,
         delete_url=delete_url,
-        form=form
+        form=form,
+        bookshelf=bookshelf
     )
 
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
 
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('settings:title')
     data = bookshelf.settings.data.model_dump()
-    form = build_settings_form(data)
+    form = build_settings_form(data, bookshelf)
 
     if request.method == 'POST':
         data = request.form.to_dict()
@@ -271,11 +267,24 @@ def settings():
 
     return render_template(
         'settings.html',
-        form=form
+        title=title,
+        form=form,
+        bookshelf=bookshelf
     )
 
 
-@app.errorhandler(Exception)
+@app.route('/language/<lang>')
+def change_language(lang: str):
+    bookshelf.change_language(lang)
+    return redirect('/')
+
+
+@app.errorhandler(404)
 def error_page(error):
     title = f'🌠 Bookshelf | {error}'
-    return render_template('error.html', title=title, error=error)
+    return render_template(
+        'error.html',
+        title=title,
+        error=error,
+        bookshelf=bookshelf
+    )

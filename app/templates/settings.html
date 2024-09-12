@@ -27,7 +27,7 @@
 </script>
 
 <div class="page-heading rounded shadow">
-    <h1>Settings</h1>
+    <h1>{{ bookshelf.locale.get('settings:title') }}</h1>
 </div>
 
 <div class="settings_page">
@@ -48,12 +48,12 @@
             </div>
 
             <div class="book-form-controls">
-                <div class="delete_item" onclick="deleteItem(this, 'other_ids_links-0');">Delete ID</div>
-                <div class="add_item" onclick="addItem(this, 'other_ids_links');">Add ID</div>
+                <div class="delete_item" onclick="deleteItem(this, 'other_ids_links-0');">{{ bookshelf.locale.get('settings:delete_id') }}</div>
+                <div class="add_item" onclick="addItem(this, 'other_ids_links');">{{ bookshelf.locale.get('settings:add_id') }}</div>
             </div>
         </div>
         <div class="info-form-submit">
-            <input class="button" type="submit" value="Save" />
+            {{form.submit}}
         </div>
     </form>
 </div>

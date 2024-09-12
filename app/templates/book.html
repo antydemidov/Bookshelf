@@ -1,4 +1,4 @@
-{% extends "layout.html" %} {% block content %}
+{% extends "layout_extended.html" %} {% block content %}
 
 <script type="text/javascript">
     function addItem(element, id_start) {
@@ -22,16 +22,13 @@
 
 <div class="action-bar">
     <div class="action-bar-item">
-        <!-- <span class="material-symbols-outlined">arrow_back</span> -->
-        <a href="/books">← Back</a>
+        <a href="/books">← {{ bookshelf.locale.get('book:toolbar:back') }}</a>
     </div>
     <div class="action-bar-item">
-        <!-- <span class="material-symbols-outlined red-text">delete</span> -->
-        <a href="{{delete_url}}" class="red-text">Delete the book</a>
+        <a href="{{delete_url}}" class="red-text">{{ bookshelf.locale.get('book:toolbar:delete_book') }}</a>
     </div>
     <div class="action-bar-item">
-        <!-- <span class="material-symbols-outlined">book_2</span> -->
-        <a href={{view_url}}>Open the file →</a>
+        <a href={{view_url}}>{{ bookshelf.locale.get('book:toolbar:open_book') }} →</a>
     </div>
 </div>
 
@@ -126,7 +123,7 @@
             <div class="info-form-field">{{form.file_type.label}}{{form.file_type}}</div>
         </div>
         <div class="info-form-submit">
-            <input class="button" type="submit" value="Save" />
+            {{form.submit}}
         </div>
     </form>
     <embed class="book shadow" src="/file/{{book.data.identifier}}" />
