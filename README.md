@@ -16,6 +16,7 @@
 1. Управление персонами: авторами, переводчиками, иллюстраторами и т.д.
 1. Управление организациями (то же, что и персонами).
 1. Чистка папки книжной полки от файлов без записи в базе данных.
+1. Доступно два языка: английский и русский.
 
 ### Функции из будущего
 
@@ -59,6 +60,7 @@ This is your bookshelf.
 1. Management of persons: authors, translators, illustrators, etc.
 1. Management of organizations (the same as the authors management).
 1. Cleaning the bookshelf from files without the record in the database.
+1. Two languages are available: English and Russian.
 
 ### Features in the future
 

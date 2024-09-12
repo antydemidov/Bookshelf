@@ -11,17 +11,16 @@ from enum import Enum
 class Constants(Enum):
     """Constants for Bookshelf."""
 
-    TABLES_LIST = ['Organizations', 'Persons', 'Books', 'OtherIDs',
-                   'BooksPersons', 'BooksOrganizations']
+    TABLES_LIST = ['Organizations', 'Persons', 'Books', 'OtherIDs', 'BooksPersons', 'BooksOrganizations']
     PERS_ORG_TYPES = ['Author', 'Translator', 'Illustrator', 'Character', 'Publisher']
     BOOK_FORMATS = ['-', 'AudiobookFormat', 'EBook', 'GraphicNovel', 'Hardcover', 'Paperback']
     OTHER_IDS_TYPES = ['ISSN', 'DOI', 'OLID']
     BADGES = ['-', '1', '2']
     DATABASE_NAME: str = 'book.db'
-    SETTINGS_FILE = 'settings.json'
+    SETTINGS_FILE: str = 'settings.json'
     FILE_TYPES = ['pdf']
-    LIBRARY_DIR = 'library'
-    DEFAULT_PICTURE = '../static/person_default.png'
+    LIBRARY_DIR: str = 'library'
+    DEFAULT_PICTURE: str = '../static/person_default.png'
 
 
 def generate_uuid():

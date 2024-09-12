@@ -107,3 +107,10 @@ class BookModel(BaseModel):
     file_size: int | None = None
     file_type: str | None = None
     other_ids: dict | None = None
+
+
+class SettingsModel(BaseModel):
+
+    default_picture: str = '../static/person_default.png'
+    default_language: str | None = None
+    other_ids_links: dict[str, str] = Field(default_factory=dict)

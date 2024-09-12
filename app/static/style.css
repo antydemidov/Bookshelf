@@ -9,6 +9,7 @@
   --accent-color-dark: #125536;
   --opposite-color: #c02130;
   --opposite-color-dark: #7d1f28;
+  --window-closer-color: #0000002c;
 }
 
 .material-symbols-outlined {
@@ -161,6 +162,8 @@ a:hover>p {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--accent-color);
+  text-decoration: none;
 }
 
 .navbar-item:hover {
@@ -170,18 +173,47 @@ a:hover>p {
 }
 
 .navbar-item>div {
-  text-wrap: nowrap;
   visibility: hidden;
   position: absolute;
   top: 60px;
+  border-radius: 10px;
+  text-wrap: nowrap;
+}
+
+.navbar-item>.tooltip {
   padding: 5px 10px;
   background-color: var(--accent-color);
   color: #fff;
-  border-radius: 10px;
 }
 
-.navbar-item:hover>div {
+.navbar-item:hover>.tooltip {
   visibility: visible;
+}
+
+.language-changer {
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  background-color: var(--background-color);
+}
+
+.language-changer>a {
+  padding: 5px 10px;
+  color: var(--accent-color);
+}
+
+.language-changer:hover+.toolbar {
+  visibility: hidden;
+}
+
+#window_closer {
+  display: block;
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  background: var(--window-closer-color);
+  position: fixed;
+  top: 0;
 }
 
 .toolbar {
@@ -285,7 +317,8 @@ a:hover>p {
 }
 
 .book_page,
-.person_page {
+.person_page,
+.settings_page {
   display: flex;
   gap: 20px;
   height: 600px;
@@ -316,6 +349,25 @@ a:hover>p {
 .info-form-field {
   display: grid;
   gap: 5px;
+}
+
+.settings_page .info-form-field {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
+
+.info-form-field-row-url {
+  width: -webkit-fill-available;
+}
+
+.info-form-field-row {
+  display: flex;
+  gap: 15px;
+}
+
+.info-form-field-row-type {
+  width: 100px;
 }
 
 .info-form-submit {

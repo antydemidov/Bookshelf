@@ -1,0 +1,61 @@
+{% extends "layout_simple.html" %} {% block content %}
+
+<script type="text/javascript">
+    function addItem(element, id_start) {
+        let old_field = element.parentElement.previousElementSibling.lastElementChild;
+        let new_field = old_field.cloneNode(true);
+        let new_id = id_start + (Date.now())
+        new_field.id = new_id;
+        new_field.name = new_id;
+        let new_field_type = new_field.firstElementChild.nextElementSibling;
+        new_field_type.id = new_id + "-id_type"
+        new_field_type.name = new_id + "-id_type"
+        let new_field_url = new_field.lastElementChild;
+        new_field_url.id = new_id + "-url"
+        new_field_url.name = new_id + "-url"
+        old_field.insertAdjacentElement('afterend', new_field);
+    }
+
+    function deleteItem(element, id_start) {
+        let field = element.parentElement.previousElementSibling.lastElementChild;
+        if (field.id != id_start) {
+            field.parentElement.removeChild(field);
+        } else {
+            alert("You can't delete the first item.");
+        }
+    }
+</script>
+
+<div class="page-heading rounded shadow">
+    <h1>{{ bookshelf.locale.get('settings:title') }}</h1>
+</div>
+
+<div class="settings_page">
+    <form class="info-form shadow rounded" id="person_form" action="" method="post" name="person_form">
+        {{ form.csrf_token }}
+        <div class="info-form-fields">
+            <div class="info-form-field">
+                {{form.default_picture.label}}{{form.default_picture}}
+            </div>
+            
+            <div class="info-form-field">
+                {{form.other_ids_links.label}}
+                {% for entry in form.other_ids_links %}
+                <div class="info-form-field-row" id="{{entry.id}}">
+                    {{entry.id_type.label}}{{entry.id_type}}{{entry.url.label}}{{entry.url}}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="book-form-controls">
+                <div class="delete_item" onclick="deleteItem(this, 'other_ids_links-0');">{{ bookshelf.locale.get('settings:delete_id') }}</div>
+                <div class="add_item" onclick="addItem(this, 'other_ids_links');">{{ bookshelf.locale.get('settings:add_id') }}</div>
+            </div>
+        </div>
+        <div class="info-form-submit">
+            {{form.submit}}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

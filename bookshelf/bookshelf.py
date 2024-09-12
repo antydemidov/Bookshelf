@@ -1,14 +1,45 @@
 """Bookshelf Internal Module."""
 
-# import csv
-# import json
+import json
 import os
 from datetime import date, datetime
 
 from bookshelf import utils
 from bookshelf.database import Database
-# from bookshelf.handlers import PDFFile
-from bookshelf.models import BookModel, OrganizationModel, PersonModel
+from bookshelf.locale import Localization
+from bookshelf.models import (BookModel, OrganizationModel, PersonModel,
+                              SettingsModel)
+
+
+class Settings:
+
+    def __init__(self):
+        self.data = None
+        self.process()
+
+    def process(self):
+        with open('settings.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        data = SettingsModel.model_validate(data)
+        self.data = data
+
+    def update(self, data: dict[str, ]):
+        data_update = {}
+        data_update['other_ids_links'] = {}
+        data_rest = data.copy()
+        for key in data.keys():
+            if key.startswith('other_ids_links'):
+                if key.endswith('type'):
+                    id_type = data_rest.pop(key)
+                if key.endswith('url'):
+                    url = data_rest.pop(key)
+                    data_update['other_ids_links'][id_type] = url
+        data_update.update(data_rest)
+
+        data = self.data.model_copy(update=data_update).model_dump()
+        with open('settings.json', 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=4)
+        self.process()
 
 
 class Person:
@@ -380,6 +411,8 @@ class BookShelf:
         self.books = Books(self.database)
         self.persons = Persons(self.database)
         self.organizations = Organizations(self.database)
+        self.settings = Settings()
+        self.locale = Localization(self.settings.data.default_language)
 
     # def get_settings(self):
     #     """Loads settings from the settings file."""
@@ -428,6 +461,10 @@ class BookShelf:
         for organization in self.organizations.organizations:
             person_org_list.append((organization.get_id(), organization.data.name))
         return person_org_list
+
+    def change_language(self, lang: str):
+        self.settings.update({'default_language': lang})
+        self.locale.load(lang)
 
     # def scan_library(self, file_types: str | list[str] = None) -> list[Book]:
     #     """

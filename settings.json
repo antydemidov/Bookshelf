@@ -1,3 +1,5 @@
 {
-    "library_path": "library"
+    "default_picture": "../static/person_default.png",
+    "default_language": "en",
+    "other_ids_links": {}
 }
