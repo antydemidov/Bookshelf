@@ -1,27 +1,27 @@
-{% extends "layout.html" %} {% block page_content %}
+{% extends "layout.html" %}
 
-<form class="toolbar shadow rounded" method="post" action="" id="toolbar_form">
-    <a class="toolbar-item shadow rounded" href="/upload">
-        <span class="material-symbols-outlined">upload_file</span>
-        <div class="tooltip">{{bookshelf.locale.get('tooltip.add_file')}}</div>
-    </a>
-    <a class="toolbar-item shadow rounded" href="/">
-        <span class="material-symbols-outlined">drive_folder_upload</span>
-        <div class="tooltip">{{bookshelf.locale.get('tooltip.add_directory')}}</div>
-    </a>
-    <a class="toolbar-item shadow rounded" href="/add_person">
-        <span class="material-symbols-outlined">person_add</span>
-        <div class="tooltip">{{bookshelf.locale.get('tooltip.add_person')}}</div>
-    </a>
-    <a class="toolbar-item shadow rounded" href="/add_organization">
-        <span class="material-symbols-outlined">domain_add</span>
-        <div class="tooltip">{{bookshelf.locale.get('tooltip.add_organization')}}</div>
-    </a>
-    <a class="toolbar-item shadow rounded red-text" href="/clean_library">
-        <span class="material-symbols-outlined">scan_delete</span>
-        <div class="tooltip">{{bookshelf.locale.get('tooltip.cleab_library')}}</div>
-    </a>
-</form>
-{% block content %} {% endblock %}
-
-{% endblock %}
+{% block page_content %}
+    <form class="toolbar shadow rounded" method="post" action="" id="toolbar_form">
+        <a class="toolbar-item shadow rounded" href="/upload">
+            <span class="material-symbols-outlined">upload_file</span>
+            <div class="tooltip">{{bookshelf.locale.get('tooltip.add_file')}}</div>
+        </a>
+        <a class="toolbar-item shadow rounded" href="/">
+            <span class="material-symbols-outlined">drive_folder_upload</span>
+            <div class="tooltip">{{bookshelf.locale.get('tooltip.add_directory')}}</div>
+        </a>
+        <a class="toolbar-item shadow rounded" href="/add_person">
+            <span class="material-symbols-outlined">person_add</span>
+            <div class="tooltip">{{bookshelf.locale.get('tooltip.add_person')}}</div>
+        </a>
+        <a class="toolbar-item shadow rounded" href="/add_organization">
+            <span class="material-symbols-outlined">domain_add</span>
+            <div class="tooltip">{{bookshelf.locale.get('tooltip.add_organization')}}</div>
+        </a>
+        <a class="toolbar-item shadow rounded red-text" href="/clean_library">
+            <span class="material-symbols-outlined">scan_delete</span>
+            <div class="tooltip">{{bookshelf.locale.get('tooltip.cleab_library')}}</div>
+        </a>
+    </form>
+    {% block content %} {% endblock content %}
+{% endblock page_content %}

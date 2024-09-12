@@ -1,10 +1,11 @@
 """The views for the web-app."""
 
-from flask import redirect, render_template, send_file, request
+from flask import redirect, render_template, request, send_file
 
 from app import app, bookshelf, utils
-from app.forms import (OrganizationForm, PersonForm, FileForm,
-                       build_book_form, build_settings_form)
+from app.forms import (build_book_form, build_file_form,
+                       build_organization_form, build_person_form,
+                       build_settings_form)
 
 
 @app.route('/')
@@ -13,7 +14,7 @@ def index():
     The main page.
     """
 
-    title = "🌠 Bookshelf: " + bookshelf.locale.get('index_title')
+    title = "🌠 Bookshelf: " + bookshelf.locale.get('index:title')
     dir_size = utils.get_size_format(bookshelf.get_size())
     books_number = str(len(bookshelf.books.books))
     file_number = str(4)  # TODO: count files in the directory
@@ -34,7 +35,7 @@ def books():
     The page of books.
     """
 
-    title = "🌠 Bookshelf | " + bookshelf.locale.get('books_title')
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('books:title')
 
     author_id = request.args.get('author_id', None, int)
     books_list = bookshelf.books.get_books(author_id)
@@ -66,7 +67,7 @@ def book(uuid: str):
     data = book_obj.data.model_dump()
     data['file_size'] = utils.get_size_format(data['file_size'])
     pers_org_choices = bookshelf.pers_org_choices()
-    form = build_book_form(data, pers_org_choices)
+    form = build_book_form(data, pers_org_choices, bookshelf)
 
     book_choices = bookshelf.book_choices()
     form.part_of.choices = book_choices
@@ -139,9 +140,9 @@ def get_file(uuid):
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_book():
-    title = "🌠 Bookshelf | " + bookshelf.locale.get('upload_title')
-    heading = bookshelf.locale.get('upload_title')
-    form = FileForm()
+    title = "🌠 Bookshelf | " + bookshelf.locale.get('upload:title')
+    heading = bookshelf.locale.get('upload:title')
+    form = build_file_form(bookshelf)
     if request.method == 'POST':
         if form.file.data:
             file_data = form.file.data.stream.read()
@@ -176,21 +177,13 @@ def person(_id: str):
     person_obj = bookshelf.persons.get_person(_id)
     title = f'🌠 Bookshelf | {person_obj.data.full_name}'
     delete_url = f'/person/{_id}/delete'
-    data = person_obj.data.model_dump()
-    if data.get('member_of', None):
-        data['member_of'] = data['member_of']['id']
-    form = PersonForm(**data)
+
     pic_url = person_obj.data.image
     if not pic_url:
         pic_url = '../static/person_default.png'
 
-    organization_choices = bookshelf.organization_choices()
-    form.member_of.choices = organization_choices
-    if person_obj.data.member_of:
-        for choice in organization_choices:
-            if choice[0] == person_obj.data.member_of.id:
-                default = choice
-        form.member_of.default = default
+    data = person_obj.data.model_dump()
+    form = build_person_form(data, bookshelf)
 
     if request.method == 'POST':
         data = request.form.to_dict()
@@ -237,7 +230,9 @@ def organization(_id: int):
     title = f'🌠 Bookshelf | {organization_obj.data.name}'
     data = organization_obj.data.model_dump()
     delete_url = f'/organization/{_id}/delete'
-    form = OrganizationForm(**data)
+
+    form = build_organization_form(data, bookshelf)
+
     pic_url = organization_obj.data.image
     if not pic_url:
         pic_url = '../static/person_default.png'
@@ -263,7 +258,7 @@ def settings():
 
     title = "🌠 Bookshelf | " + bookshelf.locale.get('settings:title')
     data = bookshelf.settings.data.model_dump()
-    form = build_settings_form(data)
+    form = build_settings_form(data, bookshelf)
 
     if request.method == 'POST':
         data = request.form.to_dict()
@@ -284,7 +279,12 @@ def change_language(lang: str):
     return redirect('/')
 
 
-@app.errorhandler(Exception)
+@app.errorhandler(404)
 def error_page(error):
     title = f'🌠 Bookshelf | {error}'
-    return render_template('error.html', title=title, error=error)
+    return render_template(
+        'error.html',
+        title=title,
+        error=error,
+        bookshelf=bookshelf
+    )
