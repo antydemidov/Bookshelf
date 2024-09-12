@@ -1,17 +1,45 @@
 """The set of errors in this project."""
 
-from dataclasses import dataclass
+
+__all__ = [
+    'TranslationError',
+    'SettingsError',
+    'WrongFileType',
+
+    'ConversionError'
+]
 
 
-@dataclass
-class Error:
-    code: str
-    name: str
-    description: str
+class TranslationError(Exception):
+    """
+    `I001`: Translation error
+
+    The translation is missing. Check the file `strings.json`.
+    """
 
 
-class Errors(object):
-    I001 = Error('I001',
-                 'I001: Translation error',
-                 'The translation is missing. Check the file `strings.json`')
-    """Translation error."""
+class SettingsError(Exception):
+    """
+    `I002`: Settings error
+    
+    The settings file is missing or has some mistakes. Check the file `settings.json`.
+    """
+
+
+class WrongFileType(Exception):
+    """
+    `I003`: Wrong file type
+    
+    This error is raised when a file type is not recognized. Currently the
+    application works only with pdf-files.
+    """
+
+
+# ============ Future errors ============
+class ConversionError(Exception):
+    """
+    `I004`: Conversion error
+    
+    This error is raised when a conversion process fails, e.g., during the
+    conversion from docx to pdf.
+    """

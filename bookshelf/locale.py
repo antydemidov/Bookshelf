@@ -1,7 +1,7 @@
 """The module for the localization class."""
 
 import json
-from bookshelf.errors import Errors
+from bookshelf.errors import TranslationError
 
 
 class Localization:
@@ -33,7 +33,10 @@ class Localization:
         for string_id, string_value in data[lang].items():
             _value = string_value
             if not string_value:
-                _value = data[self.default][string_id] or Errors.I001.name
+                _value = data[self.default][string_id]
+                if not _value:
+                    raise TranslationError(
+                        f'String with ID "{string_id}" in language "{lang}" is empty.')
             self._data.update({string_id: _value})
 
     def get(self, string_id: str) -> str:
@@ -41,4 +44,4 @@ class Localization:
 
         if string_id in self._data:
             return self._data[string_id]
-        return Errors.I001.name
+        raise TranslationError(f'String with ID "{string_id}" is empty.')

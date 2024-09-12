@@ -414,13 +414,6 @@ class BookShelf:
         self.settings = Settings()
         self.locale = Localization(self.settings.data.default_language)
 
-    # def get_settings(self):
-    #     """Loads settings from the settings file."""
-
-    #     with open(utils.Constants.SETTINGS_FILE, 'r', encoding='utf8') as f:
-    #         settings = json.load(f)
-    #     return settings
-
     def get_size(self):
         """Description."""
 
@@ -469,7 +462,7 @@ class BookShelf:
     # def scan_library(self, file_types: str | list[str] = None) -> list[Book]:
     #     """
     #     Scanning the folder specified as a library.
-        
+
     #     Parameters
     #     ----------
     #     file_types : str or list[str]
